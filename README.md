@@ -22,10 +22,10 @@ Since the official Kong images often do not include development tools, this imag
 2. Dependencies are placed into a shared `emptyDir` volume mounted at `/opt/rocks`.
 3. The Kong container is configured with:
    ```yaml
-   env:
-     KONG_LUA_PACKAGE_PATH: "/opt/rocks/share/lua/5.1/?.lua;/opt/rocks/share/lua/5.1/?/init.lua;;"
-     KONG_LUA_PACKAGE_CPATH: "/opt/rocks/lib/lua/5.1/?.so;;"
-   ```
+    env:
+        LUA_PACKAGE_PATH: "/opt/rocks/share/lua/5.1/?.lua;/opt/rocks/share/lua/5.1/?/init.lua;/opt/?.lua;/opt/?/init.lua;;"
+        LUA_PACKAGE_CPATH: "/opt/rocks/lib/lua/5.1/?.so;;"
+    ```
    so plugins can `require` their dependencies.
 
 ## Example in Helm values.yaml
@@ -41,7 +41,7 @@ deployment:
 
   initContainers:
     - name: install-luarocks
-      image: ghcr.io/<org-or-user>/kong-luarocks-builder:latest
+      image: ghcr.io/lauer/kong-luarocks-builder:latest
       env:
         - name: HOME
           value: /opt/rocks
